@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@google-cloud/dialogflow": "^7.1.0",
+    "@google/genai": "^1.7.0",
+    "cors": "^2.8.5",
+    "dialogflow-fulfillment": "^0.5.0",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.4",
+    "nodeman": "^1.1.2",
+    "nodemon": "^3.1.10",
+    "scripts": "0.1.0",
+    "xlsx": "^0.18.5"
+  }
+}
