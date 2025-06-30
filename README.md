@@ -23,8 +23,8 @@ A Node.js Express server that serves as a webhook for Dialogflow, enabling autom
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd mid_hackthon
+   git clone https://github.com/fazal-coder/express_api_dialogflow.git
+   cd express_api_dialogflow
    ```
 
 2. **Install dependencies:**
@@ -58,7 +58,6 @@ mid_hackthon/
 ├── package.json          # Dependencies and scripts
 ├── package-lock.json     # Locked dependency versions
 ├── registrations.xlsx    # Student registration data
-├── logo.png             # Project logo
 ├── .env                 # Environment variables (create this)
 ├── .gitignore          # Git ignore rules
 └── README.md           # This file
@@ -164,26 +163,3 @@ The application provides detailed console logs for:
 - Registration processing
 - Email sending status
 - API errors
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👥 Support
-
-For support and questions:
-- Create an issue in the repository
-- Contact the development team
-- Check the troubleshooting section above
-
----
-
-**Note**: This chatbot is specifically designed for SMIT (Saylani Mass IT Training) registration purposes. Ensure all data handling complies with relevant privacy and data protection regulations.
