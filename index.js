@@ -8,8 +8,9 @@ const fs = require("fs");
 
 const { GoogleGenAI } = require("@google/genai");
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY,project: "",});
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
+console.log("🌐 Running on Railway. Using Gemini API Key:", process.env.GEMINI_API_KEY ? "✅ Set" : "❌ Missing");
 
 const app = express();
 app.use(express.json());
