@@ -6,6 +6,11 @@ require("dotenv").config(); // ✅ Load .env variables
 const XLSX = require("xlsx");
 const fs = require("fs");
 
+const { GoogleGenAI } = require("@google/genai");
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// The client gets the API key from the environment variable `GEMINI_API_KEY`.
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -22,6 +27,7 @@ app.post("/webhook", async (req, res) => {
   function hi(agent) {
     agent.add("Hello! How can I help you today?");
   }
+
 
   async function forms(agent) {
     const { name, number, CnicNum, email, gender, course } = agent.parameters;
@@ -140,10 +146,28 @@ app.post("/webhook", async (req, res) => {
       agent.add("⚠️ Registration complete, but email delivery failed.");
     }
   }
-  // ✅ Fallback intent (if unknown intent is triggered)
-  function fallback(agent) {
-    agent.add("❓ Sorry, I didn’t get that. Could you please repeat?");
+
+
+  async function fallback(agent) {
+    try {
+      const queryText = agent.query; // ✅ Add this line
+
+      const result = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: [{ role: "user", parts: [{ text: queryText }] }],
+        config: {
+          thinkingConfig: {
+            thinkingBudget: 0,
+          },
+        }
+      });
+      agent.add(result.candidates[0].content.parts[0].text); // ✅ Gemini v2 structure
+    } catch (err) {
+      console.error("❌ Gemini error:", err.message);
+      agent.add("I couldn’t find an answer. Please try again.");
+    }
   }
+
 
   // ✅ Intent Map
   const intentMap = new Map();
