@@ -11,7 +11,17 @@ const { GoogleGenAI } = require("@google/genai");
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY,project: "",});
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
 console.log("🌐 Running on Railway. Using Gemini API Key:", process.env.GEMINI_API_KEY ? "✅ Set" : "❌ Missing");
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
+const uri = process.env.MONGO_URI;
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -40,6 +50,30 @@ app.post("/webhook", async (req, res) => {
     }
 
     agent.add(`✅ Thank you, ${name}. Your registration is received. email send to ${email}`);
+  // Insert into MongoDB
+  try {
+    await client.connect();
+    const db = client.db("SaylaniRegistration"); // ✅ Database name
+    const collection = db.collection("students"); // ✅ Collection name (auto-created if doesn't exist)
+
+    const mongoData = {
+      Name: name,
+      Email: email,
+      Number: number,
+      CNIC: CnicNum,
+      Gender: gender,
+      Course: course,
+      Date: new Date().toLocaleString()
+    };
+
+    const result = await collection.insertOne(mongoData);
+    console.log("✅ Document inserted with _id:", result.insertedId);
+  } catch (err) {
+    console.error("❌ MongoDB insert error:", err.message);
+    agent.add("⚠️ Registration received, but saving to database failed.");
+  }
+
+  run().catch(console.dir);
     // Prepare registration data
     const registrationData = [
       {
